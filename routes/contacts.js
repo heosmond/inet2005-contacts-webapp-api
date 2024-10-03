@@ -48,11 +48,23 @@ router.get('/get/:id', async (req, res) => {
     });
 });
 
-//MULTER file and text upload
+// MULTER file and text upload
+// Create new 
 router.post('/create', upload.single('image'), async (req, res) => {
 
     const { firstName, lastName, phone, email, title } = req.body;
     const filename = req.file ? req.file.filename : null;
+
+    // Validate inputs
+    // best practice would be to display a message instead of taxing the server
+    if (!firstName || !lastName || !phone || !email){
+
+        // TODO : delete uploaded files
+        res.status(400).send('Required fields must have a value');
+        return;
+    }
+
+    // TODO : validate proper email, proper phone number, only .jpg/ .png/, file size limit (5 MB)
 
     const contact = await prisma.contact.create({
         data: {
@@ -72,6 +84,21 @@ router.post('/create', upload.single('image'), async (req, res) => {
 router.put('/update/:id', (req, res) => {
     const id = req.params.id;
     
+    // capture the inputs
+
+    // validate the id
+
+    // validate required fields
+
+    // find the contact by id (if not found return 404)
+
+    // store filename in a variable
+
+    // if file was uploaded, save the filename, if not save the old filename (have to delete old image too)
+
+    // update the database record with prisma (using either old or new filename)
+
+
     if(req.file){
         console.log("File uploaded ", + req.file.filename);
     }
@@ -79,6 +106,15 @@ router.put('/update/:id', (req, res) => {
 
 router.delete('/delete/:id', (req, res) => {
     const id = req.params.id;
+
+    // verify id is a number
+
+    // find the contact by id (if not return 404)
+
+    // delete the record with prisma
+
+    // delete the file (if contact has one)
+
     res.send('delete record ' + id);
 })
 
